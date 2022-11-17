@@ -6,19 +6,26 @@ using UnityEngine;
 [HelpURL("https://docs.google.com/document/d/1Cmm__cbik5J8aHAI6PPaAUmEMF3wAcNo3rpgzsYPzDM/edit?usp=sharing")]
 public class TransparentModule : MonoBehaviour
 {
-    private float changeSpeed;
+    [SerializeField] private float changeSpeed;
 
     private float defaultAlpha;
     private Material mat;
     private bool toDefault;
+    [SerializeField] private bool debug;
+
 
     private void Start()
     {
+        Debug.Log("Log");
+        Debug.LogWarning("Warning");
+        Debug.LogError("Error");
+
         mat = GetComponent<Renderer>().material;
         defaultAlpha = mat.color.a;
         toDefault = false;
     }
 
+    [ContextMenu("Активировать")]
     public void ActivateModule()
     {
         float target = toDefault ? defaultAlpha : 0;
