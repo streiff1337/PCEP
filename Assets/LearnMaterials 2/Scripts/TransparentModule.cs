@@ -16,9 +16,6 @@ public class TransparentModule : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Log");
-        Debug.LogWarning("Warning");
-        Debug.LogError("Error");
 
         mat = GetComponent<Renderer>().material;
         defaultAlpha = mat.color.a;
