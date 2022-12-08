@@ -6,6 +6,7 @@ using UnityEngine;
 public class StartAllScripts : MonoBehaviour
 {
     public List<AbstractSampleScript> sampleScripts;
+    [ContextMenu("Активировать")]
     public void StartAllScript()
     {
         foreach(var sampleScript in sampleScripts)
