@@ -1,18 +1,61 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class ObstacleItem : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private Renderer rend;
+    private float changeSpeed = 0.2f;
+
+    [Range(0f, 1f)]
+    public float currentValue;
+    private static float damage = 0.005f;
+
+    //[SerializeField]
+    private UnityEvent onDestroyObstacle;
+
+    [SerializeField]
+    [ContextMenu("Перо под ребро")]
+    public void GetDamage()//float value
+    {
+        currentValue -= damage;
+        StartCoroutine(PressCorroutine(changeSpeed));
+
+
+
+    }
+    private IEnumerator PressCorroutine(float speed)
+    {
+        float t = 0;
+        Color currentColor = transform.GetComponent<Renderer>().material.color;
+
+        while (t < 1)
+        {
+            t += speed * Time.deltaTime;
+            if (currentValue >= 0.7f && currentValue < 0.9f)
+            {
+                transform.GetComponent<Renderer>().material.color = Color.Lerp(currentColor, new Color32(255, 208, 208, 255), t);
+            }
+            else if (currentValue >= 0.3f && currentValue < 0.7f)
+            {
+                transform.GetComponent<Renderer>().material.color = Color.Lerp(currentColor, new Color32(255, 132, 132, 255), t);
+            }
+            else if (currentValue > 0.0001f && currentValue < 0.3f)
+            {
+                transform.GetComponent<Renderer>().material.color = Color.Lerp(currentColor, new Color32(255, 57, 57, 255), t);
+            }
+            else if (currentValue <= 0.01f)
+            {
+                onDestroyObstacle.Invoke();
+            }
+            yield return null;
+        }
+    }
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        onDestroyObstacle = new UnityEvent();
+        onDestroyObstacle.AddListener(() => Destroy(gameObject, 1));
     }
 }
